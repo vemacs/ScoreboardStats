@@ -34,13 +34,17 @@ public class McmmoVariables implements Replaceable, Listener {
 
     @Override
     public int getScoreValue(Player player, String variable) {
-        if ("%powlvl%".equals(variable)) {
-            return ExperienceAPI.getPowerLevel(player);
-        }
+        try {
+            if ("%powlvl%".equals(variable)) {
+                return ExperienceAPI.getPowerLevel(player);
+            }
 
-        if (skillTypes.contains(variable)) {
-            final String type = variable.replace("%", "").toUpperCase(Locale.ENGLISH);
-            return ExperienceAPI.getLevel(player, type);
+            if (skillTypes.contains(variable)) {
+                final String type = variable.replace("%", "").toUpperCase(Locale.ENGLISH);
+                return ExperienceAPI.getLevel(player, type);
+            }
+        } catch (Exception playerNotFoundEx) {
+            //player not loaded yet - fail silently
         }
 
         return UNKOWN_VARIABLE;
